@@ -12,7 +12,8 @@ package listadopersonas.modelo;
 public class Empleado extends AbstractPersona implements TrabajadorAble{
     private double salario;
     private String dependencia;
-
+    
+    
     public Empleado(double salario, String dependencia, String identificacion, String nombre, byte edad) {
         super(identificacion, nombre, edad);
         this.salario = salario;
