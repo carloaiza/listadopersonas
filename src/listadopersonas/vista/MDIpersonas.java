@@ -10,6 +10,7 @@ import java.util.List;
 import javax.swing.table.DefaultTableModel;
 import listadopersonas.controlador.ControladorPersonas;
 import listadopersonas.modelo.AbstractPersona;
+import listadopersonas.modelo.DatoReporte;
 import listadopersonas.modelo.Estudiante;
 
 /**
@@ -28,6 +29,7 @@ public class MDIpersonas extends javax.swing.JFrame {
         jifListadoProfesores.hide();
         jifListadoEmpleados.hide();
         jifListadoGeneral.hide();
+        jifReporte.hide();
         
     }
 
@@ -53,12 +55,16 @@ public class MDIpersonas extends javax.swing.JFrame {
         jifListadoGeneral = new javax.swing.JInternalFrame();
         jScrollPane4 = new javax.swing.JScrollPane();
         tblPersonas = new javax.swing.JTable();
+        jifReporte = new javax.swing.JInternalFrame();
+        jScrollPane5 = new javax.swing.JScrollPane();
+        tblReporteEdadRol = new javax.swing.JTable();
         menuBar = new javax.swing.JMenuBar();
         fileMenu = new javax.swing.JMenu();
         mnuListadoEstudiantes = new javax.swing.JMenuItem();
         mnuListadoProfesores = new javax.swing.JMenuItem();
         mnuListadoEmpleados = new javax.swing.JMenuItem();
         mnuListadoPersonas = new javax.swing.JMenuItem();
+        mnuReporte = new javax.swing.JMenuItem();
         exitMenuItem = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -275,6 +281,58 @@ public class MDIpersonas extends javax.swing.JFrame {
         desktopPane.add(jifListadoGeneral);
         jifListadoGeneral.setBounds(50, 30, 590, 380);
 
+        jifReporte.setClosable(true);
+        jifReporte.setIconifiable(true);
+        jifReporte.setMaximizable(true);
+        jifReporte.setResizable(true);
+        jifReporte.setTitle("Reporte Cantidad personas x Rango de Edad  y Rol");
+        jifReporte.setVisible(true);
+
+        tblReporteEdadRol.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null}
+            },
+            new String [] {
+                "Rango de Edad", "Estudiantes", "Profesores", "Empleados"
+            }
+        ) {
+            Class[] types = new Class [] {
+                java.lang.String.class, java.lang.Integer.class, java.lang.Integer.class, java.lang.Integer.class
+            };
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        jScrollPane5.setViewportView(tblReporteEdadRol);
+
+        javax.swing.GroupLayout jifReporteLayout = new javax.swing.GroupLayout(jifReporte.getContentPane());
+        jifReporte.getContentPane().setLayout(jifReporteLayout);
+        jifReporteLayout.setHorizontalGroup(
+            jifReporteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jifReporteLayout.createSequentialGroup()
+                .addGap(37, 37, 37)
+                .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 518, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(49, Short.MAX_VALUE))
+        );
+        jifReporteLayout.setVerticalGroup(
+            jifReporteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jifReporteLayout.createSequentialGroup()
+                .addContainerGap(98, Short.MAX_VALUE)
+                .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 186, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(126, 126, 126))
+        );
+
+        desktopPane.add(jifReporte);
+        jifReporte.setBounds(370, 220, 620, 440);
+
         fileMenu.setMnemonic('f');
         fileMenu.setText("Archivo");
 
@@ -313,6 +371,14 @@ public class MDIpersonas extends javax.swing.JFrame {
         });
         fileMenu.add(mnuListadoPersonas);
 
+        mnuReporte.setText("Reporte Personas");
+        mnuReporte.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mnuReporteActionPerformed(evt);
+            }
+        });
+        fileMenu.add(mnuReporte);
+
         exitMenuItem.setMnemonic('x');
         exitMenuItem.setText("Exit");
         exitMenuItem.addActionListener(new java.awt.event.ActionListener() {
@@ -330,11 +396,11 @@ public class MDIpersonas extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(desktopPane, javax.swing.GroupLayout.DEFAULT_SIZE, 809, Short.MAX_VALUE)
+            .addComponent(desktopPane, javax.swing.GroupLayout.DEFAULT_SIZE, 1030, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(desktopPane, javax.swing.GroupLayout.DEFAULT_SIZE, 435, Short.MAX_VALUE)
+            .addComponent(desktopPane, javax.swing.GroupLayout.DEFAULT_SIZE, 729, Short.MAX_VALUE)
         );
 
         pack();
@@ -395,6 +461,19 @@ public class MDIpersonas extends javax.swing.JFrame {
         jifListadoGeneral.show();
     }//GEN-LAST:event_mnuListadoPersonasActionPerformed
 
+    private void mnuReporteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnuReporteActionPerformed
+        // TODO add your handling code here:
+        DefaultTableModel model = (DefaultTableModel) tblReporteEdadRol.getModel();
+        model.getDataVector().removeAllElements();
+        
+        for (DatoReporte dato : controlPersonas.obtenerConteoxEdadesxRol()) {
+            model.addRow(dato.obtenerArregloObjeto());
+        }
+        tblReporteEdadRol.setModel(model);  
+        jifReporte.show();
+        
+    }//GEN-LAST:event_mnuReporteActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -438,19 +517,23 @@ public class MDIpersonas extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;
+    private javax.swing.JScrollPane jScrollPane5;
     private javax.swing.JInternalFrame jifListadoEmpleados;
     private javax.swing.JInternalFrame jifListadoEstudiantes;
     private javax.swing.JInternalFrame jifListadoGeneral;
     private javax.swing.JInternalFrame jifListadoProfesores;
+    private javax.swing.JInternalFrame jifReporte;
     private javax.swing.JMenuBar menuBar;
     private javax.swing.JMenuItem mnuListadoEmpleados;
     private javax.swing.JMenuItem mnuListadoEstudiantes;
     private javax.swing.JMenuItem mnuListadoPersonas;
     private javax.swing.JMenuItem mnuListadoProfesores;
+    private javax.swing.JMenuItem mnuReporte;
     private javax.swing.JTable tblEmpleados;
     private javax.swing.JTable tblEstudiantes;
     private javax.swing.JTable tblPersonas;
     private javax.swing.JTable tblProfesores;
+    private javax.swing.JTable tblReporteEdadRol;
     // End of variables declaration//GEN-END:variables
 
 }
